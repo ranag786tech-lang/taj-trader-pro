@@ -8,7 +8,7 @@ Paint shop ke liye banaya gaya PWA Calculator - Offline chalta hai!
 - ✅ PWA: Mobile pe install hota hai, bina internet ke chalta hai
 
 ### Live Demo
-https://your-username.github.io/taj-trader-pro/
+https://ranag786tech-lang.github.io/taj-trader-pro/
 
 ### How to Install
 1. Chrome me website kholo
