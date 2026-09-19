@@ -1,21 +1,54 @@
 {
   "name": "Taj Trader Pro",
-  "short_name": "TTP",
-  "description": "Paint shop discount calculator - Chain discount and reverse discount",
+  "short_name": "Taj Trader",
+  "description": "Discount, Profit & Margin Calculator for Traders",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#FFF8E1",
   "theme_color": "#E65100",
+  "lang": "ur",
+  "dir": "ltr",
+  "categories": ["business", "finance", "utilities"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Discount Se Price",
+      "short_name": "Discount",
+      "url": "./index.html#part1",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Profit Calculator",
+      "short_name": "Profit",
+      "url": "./index.html#part4",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
