@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
 <title>Taj Trader Pro</title>
@@ -8,54 +8,303 @@
 <meta name="theme-color" content="#E65100">
 <link rel="icon" href="icon-192.png">
 <style>
-body{font-family:sans-serif;background:#FFF8E1;padding:15px}
-.box{background:white;padding:20px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);max-width:420px;margin:auto;margin-bottom:20px}
-h2{color:#E65100;text-align:center;margin:5px}
-h3{background:#E65100;color:white;padding:8px;border-radius:8px;text-align:center}
-input{width:92%;padding:12px;margin:6px 0;border:2px solid #FFB74D;border-radius:8px;font-size:17px}
-button{width:96%;padding:13px;background:#E65100;color:white;border:none;border-radius:8px;font-size:18px;margin-top:8px;font-weight:bold}
-#result1,#result2{background:#FFF3E0;padding:12px;border-radius:10px;margin-top:12px;font-size:17px;text-align:center;border:2px dashed #E65100}
+:root{
+  --primary:#E65100;
+  --primary-light:#FFB74D;
+  --bg:#FFF8E1;
+  --card:#ffffff;
+  --text:#212121;
+  --muted:#757575;
+  --success:#2E7D32;
+  --danger:#C62828;
+  --result-bg:#FFF3E0;
+}
+body.dark{
+  --primary:#FF9800;
+  --primary-light:#FFB74D;
+  --bg:#121212;
+  --card:#1e1e1e;
+  --text:#f1f1f1;
+  --muted:#aaa;
+  --result-bg:#2a2a2a;
+}
+*{box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:15px;margin:0;transition:background .3s}
+.box{background:var(--card);padding:20px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);max-width:440px;margin:auto;margin-bottom:20px;color:var(--text)}
+h2{color:var(--primary);text-align:center;margin:5px}
+h3{background:var(--primary);color:white;padding:8px;border-radius:8px;text-align:center;font-size:1rem;margin:0 0 10px}
+label{font-size:.9rem;color:var(--muted);display:block;margin-top:6px}
+input,select{width:100%;padding:12px;margin:6px 0;border:2px solid var(--primary-light);border-radius:8px;font-size:17px;background:var(--card);color:var(--text);outline:none}
+input:focus{border-color:var(--primary)}
+button{width:100%;padding:13px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:17px;margin-top:8px;font-weight:bold;cursor:pointer;transition:transform .1s}
+button:active{transform:scale(.98)}
+.btn-row{display:flex;gap:6px;margin-top:8px}
+.btn-row button{margin-top:0}
+.btn-ghost{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn-green{background:var(--success)}
+.btn-small{padding:8px;font-size:14px}
+.presets{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0}
+.presets button{width:auto;flex:1;min-width:55px;padding:8px;font-size:14px;background:var(--primary-light);color:#000}
+#result1,#result2,#result3{background:var(--result-bg);padding:12px;border-radius:10px;margin-top:12px;font-size:16px;text-align:center;border:2px dashed var(--primary);line-height:1.6}
+.header{display:flex;justify-content:space-between;align-items:center;max-width:440px;margin:auto;margin-bottom:10px}
+.header h2{margin:0}
+.icon-btn{background:var(--card);border:2px solid var(--primary);color:var(--primary);width:auto;padding:8px 12px;font-size:18px;border-radius:50%;margin:0}
+.history-list{max-height:220px;overflow-y:auto;font-size:14px}
+.history-item{background:var(--result-bg);padding:8px 10px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.history-item span{flex:1}
+.del-btn{background:var(--danger);color:white;border:none;border-radius:6px;padding:4px 8px;font-size:12px;width:auto;cursor:pointer;margin:0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99}
+.toast.show{opacity:1}
+.tabs{display:flex;gap:4px;background:var(--result-bg);padding:4px;border-radius:10px;margin-bottom:10px}
+.tab{flex:1;padding:10px;border:none;background:transparent;color:var(--muted);border-radius:8px;font-size:14px;font-weight:600;margin:0;cursor:pointer}
+.tab.active{background:var(--card);color:var(--primary);box-shadow:0 2px 4px rgba(0,0,0,.1)}
 </style>
 </head>
 <body>
-<div class="box">
-<h2>🎨 Taj Trader Pro</h2>
-<h3>Part 1: Discount Se Price</h3>
-<label>Base Price</label>
-<input type="number" id="price" value="1020">
-<label>Discount 1 %</label>
-<input type="number" id="d1" value="25">
-<label>Extra %</label>
-<input type="number" id="d2" value="3">
-<button onclick="calcPrice()">Final Price Nikalo</button>
-<div id="result1"></div>
+
+<div class="header">
+  <h2>🎨 Taj Trader Pro</h2>
+  <button class="icon-btn" onclick="toggleDark()" title="Dark mode">🌙</button>
 </div>
+
+<!-- ================= PART 1 ================= -->
 <div class="box">
-<h3>Part 2: Price Se Discount %</h3>
-<label>Original Price</label>
-<input type="number" id="op" value="1020">
-<label>Jis Price Pe Becha</label>
-<input type="number" id="sp" value="847">
-<button onclick="calcDiscount()" style="background:#2E7D32">Kitna % Diya?</button>
-<div id="result2"></div>
+  <h3>Part 1: Discount Se Price</h3>
+  <label>Base Price</label>
+  <input type="number" id="price" value="1020" inputmode="decimal">
+
+  <label>Discount 1 %</label>
+  <input type="number" id="d1" value="25" inputmode="decimal">
+  <div class="presets" id="presets1"></div>
+
+  <label>Extra % (2nd)</label>
+  <input type="number" id="d2" value="3" inputmode="decimal">
+
+  <label>Extra % (3rd) — optional</label>
+  <input type="number" id="d3" value="0" inputmode="decimal">
+
+  <button onclick="calcPrice()">Final Price Nikalo</button>
+  <div id="result1"></div>
+
+  <div class="btn-row">
+    <button class="btn-ghost btn-small" onclick="copyResult('result1')">📋 Copy</button>
+    <button class="btn-ghost btn-small" onclick="shareWA('result1')">📤 Share</button>
+    <button class="btn-ghost btn-small" onclick="saveHistory('result1')">💾 Save</button>
+  </div>
 </div>
+
+<!-- ================= PART 2 ================= -->
+<div class="box">
+  <h3>Part 2: Price Se Discount %</h3>
+  <label>Original Price</label>
+  <input type="number" id="op" value="1020" inputmode="decimal">
+  <label>Jis Price Pe Becha</label>
+  <input type="number" id="sp" value="847" inputmode="decimal">
+  <button onclick="calcDiscount()" class="btn-green">Kitna % Diya?</button>
+  <div id="result2"></div>
+  <div class="btn-row">
+    <button class="btn-ghost btn-small" onclick="copyResult('result2')">📋 Copy</button>
+    <button class="btn-ghost btn-small" onclick="shareWA('result2')">📤 Share</button>
+  </div>
+</div>
+
+<!-- ================= PART 3: REVERSE ================= -->
+<div class="box">
+  <h3>Part 3: Final Se Original Price</h3>
+  <label>Final / Sale Price</label>
+  <input type="number" id="fp" value="847" inputmode="decimal">
+  <label>Discount %</label>
+  <input type="number" id="rp" value="25" inputmode="decimal">
+  <button onclick="calcReverse()">Original Price Nikalo</button>
+  <div id="result3"></div>
+</div>
+
+<!-- ================= PART 4: PROFIT / MARGIN ================= -->
+<div class="box">
+  <h3>Part 4: Profit / Margin</h3>
+  <label>Cost Price (Lagat)</label>
+  <input type="number" id="cp" value="800" inputmode="decimal">
+  <label>Selling Price (Bikri)</label>
+  <input type="number" id="sellp" value="1020" inputmode="decimal">
+  <button onclick="calcProfit()">Profit Nikalo</button>
+  <div id="result3" style="display:none"></div>
+  <div id="result4"></div>
+</div>
+
+<!-- ================= HISTORY ================= -->
+<div class="box">
+  <h3>📜 History (Last 20)</h3>
+  <div class="history-list" id="historyList"></div>
+  <div class="btn-row">
+    <button class="btn-ghost btn-small" onclick="clearHistory()">🗑️ Clear All</button>
+    <button class="btn-ghost btn-small" onclick="exportCSV()">⬇️ Export CSV</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
+/* ============ HELPERS ============ */
+const $ = id => document.getElementById(id);
+const num = id => parseFloat($(id).value) || 0;
+
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1500);
+}
+
+function copyResult(id){
+  const text = $(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>toast('✅ Copied!'));
+}
+
+function shareWA(id){
+  const text = $(id).innerText + ' — Taj Trader Pro';
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+
+/* ============ PART 1 ============ */
 function calcPrice(){
-let p=parseFloat(document.getElementById('price').value)||0;
-let a=parseFloat(document.getElementById('d1').value)||0;
-let b=parseFloat(document.getElementById('d2').value)||0;
-let f=p*(100-a)/100*(100-b)/100;
-document.getElementById('result1').innerHTML=`<b>Final: Rs ${f.toFixed(2)}</b><br>Bachat: Rs ${(p-f).toFixed(2)}`;
+  const p = num('price');
+  const a = num('d1');
+  const b = num('d2');
+  const c = num('d3');
+  let f = p * (100-a)/100 * (100-b)/100 * (100-c)/100;
+  if(f < 0) f = 0;
+  $('result1').innerHTML =
+    `<b>Final: Rs ${f.toFixed(2)}</b><br>` +
+    `Bachat: Rs ${(p-f).toFixed(2)}<br>` +
+    `<small>Total Discount: ${(p>0 ? ((p-f)/p*100).toFixed(2) : 0)}%</small>`;
 }
+
+/* ============ PART 2 ============ */
 function calcDiscount(){
-let o=parseFloat(document.getElementById('op').value)||0;
-let s=parseFloat(document.getElementById('sp').value)||0;
-let disc=o-s;
-let per=disc/o*100;
-document.getElementById('result2').innerHTML=`<b>Discount Diya: ${per.toFixed(2)}% </b><br>Bachat Di: Rs ${disc.toFixed(2)}`;
+  const o = num('op');
+  const s = num('sp');
+  if(o <= 0){ $('result2').innerHTML = '⚠️ Original price daalein'; return; }
+  const disc = o - s;
+  const per = disc / o * 100;
+  $('result2').innerHTML =
+    `<b>Discount Diya: ${per.toFixed(2)}%</b><br>` +
+    `Bachat Di: Rs ${disc.toFixed(2)}`;
 }
-calcPrice(); calcDiscount();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+
+/* ============ PART 3 ============ */
+function calcReverse(){
+  const f = num('fp');
+  const p = num('rp');
+  if(p >= 100){ $('result3').innerHTML = '⚠️ Discount 100% se kam hona chahiye'; return; }
+  const original = f / (1 - p/100);
+  $('result3').innerHTML =
+    `<b>Original Price: Rs ${original.toFixed(2)}</b><br>` +
+    `Discount: Rs ${(original-f).toFixed(2)} (${p}%)`;
+}
+
+/* ============ PART 4 ============ */
+function calcProfit(){
+  const cp = num('cp');
+  const sp = num('sellp');
+  if(cp <= 0){ $('result4').innerHTML = '⚠️ Cost price daalein'; return; }
+  const profit = sp - cp;
+  const per = profit / cp * 100;
+  const label = profit >= 0 ? 'Profit' : 'Loss';
+  const color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+  $('result4').innerHTML =
+    `<b style="color:${color}">${label}: Rs ${Math.abs(profit).toFixed(2)}</b><br>` +
+    `${label} %: ${per.toFixed(2)}%<br>` +
+    `Margin (on sale): ${(profit/sp*100).toFixed(2)}%`;
+}
+
+/* ============ DARK MODE ============ */
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('dark', document.body.classList.contains('dark') ? '1' : '0');
+  if(document.body.classList.contains('dark')) document.querySelector('.icon-btn').textContent = '☀️';
+  else document.querySelector('.icon-btn').textContent = '🌙';
+}
+if(localStorage.getItem('dark') === '1'){
+  document.body.classList.add('dark');
+  document.querySelector('.icon-btn').textContent = '☀️';
+}
+
+/* ============ PRESETS ============ */
+[5,10,15,20,25,30,40,50].forEach(v=>{
+  const b = document.createElement('button');
+  b.textContent = v + '%';
+  b.onclick = () => { $('d1').value = v; calcPrice(); };
+  $('presets1').appendChild(b);
+});
+
+/* ============ HISTORY (localStorage) ============ */
+function getHistory(){
+  try { return JSON.parse(localStorage.getItem('tt_history') || '[]'); }
+  catch { return []; }
+}
+function setHistory(arr){
+  localStorage.setItem('tt_history', JSON.stringify(arr));
+  renderHistory();
+}
+function saveHistory(resId){
+  const text = $(resId).innerText.replace(/\n/g,' | ');
+  const arr = getHistory();
+  arr.unshift({ time: new Date().toLocaleString(), text });
+  if(arr.length > 20) arr.pop();
+  setHistory(arr);
+  toast('💾 Saved!');
+}
+function renderHistory(){
+  const arr = getHistory();
+  const box = $('historyList');
+  if(arr.length === 0){ box.innerHTML = '<p style="color:var(--muted);text-align:center">Koi history nahi</p>'; return; }
+  box.innerHTML = arr.map((item, i) =>
+    `<div class="history-item">
+       <span><small>${item.time}</small><br>${item.text}</span>
+       <button class="del-btn" onclick="deleteHistory(${i})">✕</button>
+     </div>`).join('');
+}
+function deleteHistory(i){
+  const arr = getHistory();
+  arr.splice(i,1);
+  setHistory(arr);
+}
+function clearHistory(){
+  if(confirm('Saari history delete karein?')) setHistory([]);
+}
+function exportCSV(){
+  const arr = getHistory();
+  if(arr.length === 0){ toast('History khaali hai'); return; }
+  const csv = 'Time,Calculation\n' + arr.map(x=>`"${x.time}","${x.text}"`).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'taj-trader-history.csv';
+  a.click();
+}
+
+/* ============ AUTO CALC ============ */
+['price','d1','d2','d3'].forEach(id => $(id).addEventListener('input', calcPrice));
+['op','sp'].forEach(id => $(id).addEventListener('input', calcDiscount));
+['fp','rp'].forEach(id => $(id).addEventListener('input', calcReverse));
+['cp','sellp'].forEach(id => $(id).addEventListener('input', calcProfit));
+
+/* ============ INITIAL RUN ============ */
+calcPrice(); calcDiscount(); calcReverse(); calcProfit(); renderHistory();
+
+/* ============ SERVICE WORKER ============ */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    reg.onupdatefound = () => {
+      const nw = reg.installing;
+      nw.onstatechange = () => {
+        if(nw.state === 'installed' && navigator.serviceWorker.controller){
+          toast('🔄 Naya version aa gaya, refresh karein');
+        }
+      };
+    };
+  });
+}
 </script>
 </body>
 </html>
