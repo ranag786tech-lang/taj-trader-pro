@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Taj Trader Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E65100">
+<link rel="icon" href="icon-192.png">
+<style>
+body{font-family:sans-serif;background:#FFF8E1;padding:15px}
+.box{background:white;padding:20px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);max-width:420px;margin:auto;margin-bottom:20px}
+h2{color:#E65100;text-align:center;margin:5px}
+h3{background:#E65100;color:white;padding:8px;border-radius:8px;text-align:center}
+input{width:92%;padding:12px;margin:6px 0;border:2px solid #FFB74D;border-radius:8px;font-size:17px}
+button{width:96%;padding:13px;background:#E65100;color:white;border:none;border-radius:8px;font-size:18px;margin-top:8px;font-weight:bold}
+#result1,#result2{background:#FFF3E0;padding:12px;border-radius:10px;margin-top:12px;font-size:17px;text-align:center;border:2px dashed #E65100}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🎨 Taj Trader Pro</h2>
+<h3>Part 1: Discount Se Price</h3>
+<label>Base Price</label>
+<input type="number" id="price" value="1020">
+<label>Discount 1 %</label>
+<input type="number" id="d1" value="25">
+<label>Extra %</label>
+<input type="number" id="d2" value="3">
+<button onclick="calcPrice()">Final Price Nikalo</button>
+<div id="result1"></div>
+</div>
+<div class="box">
+<h3>Part 2: Price Se Discount %</h3>
+<label>Original Price</label>
+<input type="number" id="op" value="1020">
+<label>Jis Price Pe Becha</label>
+<input type="number" id="sp" value="847">
+<button onclick="calcDiscount()" style="background:#2E7D32">Kitna % Diya?</button>
+<div id="result2"></div>
+</div>
+<script>
+function calcPrice(){
+let p=parseFloat(document.getElementById('price').value)||0;
+let a=parseFloat(document.getElementById('d1').value)||0;
+let b=parseFloat(document.getElementById('d2').value)||0;
+let f=p*(100-a)/100*(100-b)/100;
+document.getElementById('result1').innerHTML=`<b>Final: Rs ${f.toFixed(2)}</b><br>Bachat: Rs ${(p-f).toFixed(2)}`;
+}
+function calcDiscount(){
+let o=parseFloat(document.getElementById('op').value)||0;
+let s=parseFloat(document.getElementById('sp').value)||0;
+let disc=o-s;
+let per=disc/o*100;
+document.getElementById('result2').innerHTML=`<b>Discount Diya: ${per.toFixed(2)}% </b><br>Bachat Di: Rs ${disc.toFixed(2)}`;
+}
+calcPrice(); calcDiscount();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+</script>
+</body>
+</html>
